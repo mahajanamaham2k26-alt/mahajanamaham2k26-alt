@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHAM 2K26 - Inter-College Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap');
+
+        [x-cloak] { display: none !important; }
+
+        :root {
+            --bg-1: #030712;
+            --bg-2: #0f172a;
+            --bg-3: #111827;
+            --card: rgba(15, 23, 42, 0.58);
+            --card-strong: rgba(10, 15, 28, 0.88);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(125, 211, 252, 0.34);
+            --accent: #7dd3fc;
+            --accent-2: #c084fc;
+            --accent-soft: rgba(125, 211, 252, 0.14);
+            --text-soft: #a5b4cc;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(125, 211, 252, 0.10), transparent 24%),
+                radial-gradient(circle at top right, rgba(192, 132, 252, 0.10), transparent 22%),
+                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.08), transparent 26%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2) 45%, var(--bg-3));
+            min-height: 100vh;
+            letter-spacing: 0.01em;
+        }
+
+        .glass {
+            background: var(--card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.26);
+        }
+
+        .glass-strong {
+            background: var(--card-strong);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+        }
+
+        .gradient-bg {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg::before,
+        .gradient-bg::after {
+            content: "";
+            position: fixed;
+            inset: auto;
+            width: 420px;
+            height: 420px;
+            border-radius: 999px;
+            filter: blur(110px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.22;
+        }
+
+        .gradient-bg::before {
+            top: -100px;
+            right: -100px;
+            background: var(--accent);
+        }
+
+        .gradient-bg::after {
+            bottom: -100px;
+            left: -100px;
+            background: var(--accent-2);
+        }
+
+        .details-border { border-left: 4px solid var(--accent); }
+
+        .prize-glow {
+            text-shadow:
+                0 0 12px rgba(125, 211, 252, 0.22),
+                0 0 24px rgba(192, 132, 252, 0.12);
+        }
+
+        .coord-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 999px; }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, rgba(125, 211, 252, 0.7), rgba(192, 132, 252, 0.7));
+            border-radius: 999px;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent 90%);
+            pointer-events: none;
+        }
+
+        .section-title {
+            letter-spacing: 0.28em;
+        }
+
+        .event-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            border-radius: 24px;
+        }
+
+        .event-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(125,211,252,0.12), transparent 45%, rgba(192,132,252,0.10));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--border-strong);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.28);
+        }
+
+        .event-card:hover::before {
+            opacity: 1;
+        }
+
+        .soft-badge {
+            background: rgba(125, 211, 252, 0.10);
+            border: 1px solid rgba(125, 211, 252, 0.18);
+            color: var(--accent);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+            box-shadow: 0 14px 30px rgba(56, 189, 248, 0.22);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(139, 92, 246, 0.28);
+        }
+
+        .secondary-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.10);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.16);
+        }
+
+        .modal-panel {
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.48);
+        }
+
+        .muted {
+            color: var(--text-soft);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        h4, h5, h6, p, span, a, button, li, div {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-gray-100 font-sans" x-data="festApp()">
+<nav class="relative w-full z-50 px-4 md:px-6 pt-4">
+    <div class="glass max-w-7xl mx-auto rounded-3xl py-8 px-8 md:px-12 flex flex-col items-center border border-white/10">
+        <div class="relative flex-shrink-0 group mb-6">
+            <div class="absolute inset-0 bg-sky-400/30 blur-2xl rounded-2xl opacity-40 group-hover:opacity-70 transition-opacity"></div>
+            <img src="https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/WhatsApp%20Image%202026-03-22%20at%2011.37.42%20AM.jpeg?raw=true" 
+                 alt="College Logo" 
+                 class="relative w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl border-2 border-white/20 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+        </div>
+
+        <div class="flex flex-col items-center text-center gap-2">
+            <div class="font-black text-xl md:text-5xl tracking-tight uppercase text-white leading-tight">
+                <div class="font-bold text-sm md:text-base tracking-[0.55em] uppercase text-sky-400">
+                Mahajana Education Society®
+            </div> 
+                <div class="font-bold text-sm md:text-base tracking-[0.55em] uppercase text-sky-400">
+                Education to Excel
+            </div>
+                <span class="text-sky-300">SBRR MAHAJANA FIRST GRADE COLLEGE (AUTONOMOUS)</span> 
+            </div>
+            
+            <div class="font-bold text-sm md:text-base tracking-[0.55em] uppercase text-sky-400">
+               Jayalakshmipuram, Mysuru-570012 Karnataka, India<br>
+                Affiliated to University of Mysore <br>
+                Re-Accredited by NAAC with 'A' Grade, College with Potential for Excellence
+            </div> 
+            <div class="mt-8 flex flex-col items-center group">
+                <div class="relative mb-3">
+                    <div class="absolute inset-0 bg-sky-400/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <img src="https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/1000197888.png?raw=true" 
+                         alt="Maham 2K26 Logo" 
+                         class="relative w-24 h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_0_20px_rgba(125,211,252,0.6)] transition-transform duration-500 group-hover:scale-110">
+                </div>
+                
+                <h2 class="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase mb-1">
+                    MAHAM 2K26
+                </h2>
+                <div class="flex flex-col items-center gap-1">
+                    <span class="text-xs md:text-sm font-bold tracking-[0.4em] text-sky-300 uppercase">State Level <br>Inter-College Fest</span>
+                    <span class="px-4 py-1 bg-sky-400/10 border border-sky-400/30 rounded-full text-[10px] md:text-xs font-black tracking-widest text-sky-300 mt-2">
+                        <i class="far fa-calendar-alt mr-2"></i> 10TH APRIL 2026
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex mt-8 space-x-6 md:space-x-10 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-300">
+            <span class="px-4 py-1 bg-sky-400/10 border border-sky-400/30 rounded-full text-[13px] md:text-xs font-black tracking-widest text-sky-300 mt-2">
+                <a href="https://fgc.mahajana.edu.in" target="_blank" class="text-sky-400">HOME</a>
+                </span>
+                <span class="px-4 py-1 bg-sky-400/10 border border-sky-400/30 rounded-full text-[13px] md:text-xs font-black tracking-widest text-sky-300 mt-2">
+            <a href="#events" class="text-sky-400"> Fest Events</a>
+            </span>
+        </div>
+    </div>
+</nav>
+
+<header class="relative flex flex-col items-center justify-start text-center px-4 pt-12 pb-16">
+    <div class="hero-grid"></div>
+
+    <div class="relative z-10 max-w-5xl w-full">
+        <div class="relative mb-8 group">
+            <div class="absolute inset-0 bg-sky-400/20 blur-3xl rounded-full opacity-50 group-hover:opacity-80 transition-opacity"></div>
+            
+        </div>
+
+        <div class="glass max-w-2xl mx-auto p-6 rounded-2xl border border-sky-300/20 text-left">
+            <h1 class="text-base md:text-xl font-medium text-sky-300 mb-5 tracking-widest italic">
+                <i class="fas fa-scroll"></i> General Fest Rules
+            </h1>
+            <ul class="space-y-2 text-sm text-sky-300">
+                <li class="flex gap-2"><span>•</span> Participants must bring their college ID cards.</li>
+                <li class="flex gap-2"><span>•</span> All participants must report to the registration desk by 8:30 a.m. on the day of the event. </li>
+                <li class="flex gap-2"><span>•</span> A minimum of one team and any number of additional teams from each college are welcome for each event.</li>
+                <li class="flex gap-2"><span>•</span> A participant cannot represent in more than one event.</li>
+                <li class="flex gap-2"><span>•</span> No changes in team members are allowed after registration.</li>
+                <li class="flex gap-2"><span>•</span> Judges decisions are final and binding for all events.</li>
+                <li class="flex gap-2"><span>•</span> Participants must maintain discipline, decorum, and cleanliness throughout the fest.</li>
+                <li class="flex gap-2"><span>•</span> The organizers reserve the right to alter the rules of any event if necessary.</li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<section id="events" class="relative z-10 py-16 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <template x-for="dept in departments" :key="dept.name">
+                <div class="glass event-card p-8 rounded-[32px] cursor-pointer group border border-white/10 flex flex-col items-center text-center" @click="openDept(dept)">
+                    
+                    <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden group-hover:border-sky-300/40 transition-all duration-500 shadow-2xl">
+    <div class="absolute inset-0 bg-sky-400/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    
+    <template x-if="dept.logo">
+        <img :src="dept.logo" 
+             :alt="dept.name + ' logo'" 
+             :class="{
+                'scale-[1.8]': ['MAHAMADHYAMA', 'VIGYAN MANTHAN', 'Commerce'].includes(dept.name),
+                'w-full h-full p-0': true
+             }"
+             class="relative z-10 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-transform duration-500 group-hover:scale-[1.9]">
+    </template>
+    
+    <template x-if="!dept.logo">
+        <i :class="dept.icon" class="relative z-10 text-7xl text-sky-300 drop-shadow-[0_0_8px_rgba(125,211,252,0.5)]"></i>
+    </template>
+</div>
+
+                  <div class="space-y-3">
+    <h3 class="font-black text-xl md:text-2xl tracking-tight text-sky-300 group-hover:text-white transition-colors" 
+        x-text="dept.name">
+    </h3>
+    
+    <div class="inline-block px-3 py-1 rounded-full border border-white/5 bg-white/5 group-hover:border-sky-500/30 group-hover:bg-sky-500/10 transition-all">
+        <span class="text-[10px] font-bold tracking-[0.3em] text-white/40 uppercase group-hover:text-sky-300" 
+              x-text="dept.deptType">
+        </span>
+    </div>
+</div>
+
+                    <div class="mt-8 pt-6 border-t border-white/5 w-full flex items-center justify-center gap-3">
+                        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-sky-400 group-hover:text-sky-300 transition-colors">EXPLORE EVENTS</span>
+                        <div class="w-6 h-6 rounded-full bg-sky-400/10 flex items-center justify-center group-hover:bg-sky-400 group-hover:text-black transition-all">
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4" x-show="isModalOpen" x-cloak x-transition>
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-md" @click="isModalOpen = false"></div>
+
+    <div class="glass-strong modal-panel w-full max-w-5xl h-[82vh] rounded-3xl overflow-hidden flex flex-col relative border border-white/10">
+        <div class="p-6 md:p-8 border-b border-white/10 flex justify-between items-center bg-white/[0.03]">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black tracking-tight uppercase text-white" x-text="selectedDept?.name"></h2>
+                <p class="text-sky-300/80 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mt-1" 
+                   x-text="selectedDept?.deptTagline">
+                </p>
+            </div>
+            <button @click="isModalOpen = false" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 text-2xl font-light hover:text-red-400 hover:border-red-400/30 transition flex items-center justify-center">&times;</button>
+        </div>
+
+        <div class="p-6 md:p-8 overflow-y-auto custom-scroll grid grid-cols-1 md:grid-cols-2 gap-6">
+            <template x-for="event in selectedDept?.events" :key="event.name">
+    <div class="bg-white/[0.04] border border-white/10 p-6 rounded-2xl flex flex-col justify-between hover:border-sky-300/30 transition-all group">
+        <div>
+            <template x-if="event.logo">
+                <div class="w-16 h-16 mb-4 rounded-xl bg-sky-400/10 border border-sky-400/20 flex items-center justify-center overflow-hidden">
+                    <img :src="event.logo" class="w-full h-full object-contain p-2 filter drop-shadow-[0_0_8px_rgba(125,211,252,0.5)]">
+                </div>
+            </template>
+            
+            <h4 class="text-xl font-bold mb-2 text-white leading-snug group-hover:text-sky-300 transition-colors" x-text="event.name"></h4>
+            <p class="text-sm text-sky-300/90 mb-5 italic" x-text="event.tagline || ''"></p>
+        </div>
+
+        <button @click="showDetails(event)" class="w-full primary-btn py-3.5 rounded-xl text-[11px] font-bold uppercase tracking-[0.22em] transition-all text-white">
+            View Details
+        </button>
+    </div>
+</template>
+        </div>
+    </div>
+</div>
+
+    <div class="fixed inset-0 z-[70] flex items-center justify-center p-4" x-show="isDetailsOpen" x-cloak x-transition>
+        <div class="fixed inset-0 bg-black/90 backdrop-blur-sm" @click="isDetailsOpen = false"></div>
+
+        <div class="glass-strong modal-panel max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scroll p-6 md:p-8 rounded-[28px] relative border border-sky-300/20">
+            <div class="mb-6 pb-5 border-b border-white/10 flex items-center gap-6">
+    <template x-if="activeEvent?.logo">
+        <img :src="activeEvent.logo" class="w-20 h-20 object-contain drop-shadow-[0_0_15px_rgba(125,211,252,0.4)]">
+    </template>
+    <div>
+        <p class="text-[10px] uppercase tracking-[0.24em] text-sky-300 mb-2">Event Details</p>
+        <h3 class="text-3xl font-black mb-2 text-sky-300 tracking-tight uppercase" x-text="activeEvent?.name"></h3>
+        <p class="text-sm text-gray-400 italic" x-text="activeEvent?.tagline"></p>
+    </div>
+</div>
+            
+            <div class="space-y-8">
+                <template x-if="activeEvent?.details">
+                    <div class="space-y-7">
+                        <div x-show="activeEvent.details.longDesc" class="text-sm text-gray-300 leading-relaxed bg-white/[0.04] p-5 rounded-2xl border border-white/10 details-border whitespace-pre-line" x-text="activeEvent.details.longDesc"></div>
+
+                        <div x-show="activeEvent.details.instructions">
+                            <h4 class="text-sky-300 font-bold uppercase text-xs tracking-[0.22em] mb-4">General Rules & Guidelines</h4>
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <template x-for="item in activeEvent.details.instructions">
+                                    <li class="flex gap-3 bg-white/[0.03] border border-white/8 rounded-xl px-4 py-3">
+                                        <span class="text-sky-300 mt-[1px]">➤</span>
+                                        <span x-text="item"></span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+
+                        <div x-show="activeEvent.details.rounds">
+                            <h4 class="text-sky-300 font-bold uppercase text-xs tracking-[0.22em] mb-4">Event Structure / Workflow</h4>
+                            <div class="grid gap-4">
+                                <template x-for="round in activeEvent.details.rounds">
+                                    <div class="bg-white/[0.04] p-5 rounded-2xl border border-white/10">
+                                        <p class="font-bold text-white mb-2 uppercase text-sm tracking-wide" x-text="round.title"></p>
+                                        <p class="text-sm text-gray-400 leading-relaxed" x-text="round.desc"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div x-show="activeEvent.details.committee">
+                            <h4 class="text-sky-300 font-bold uppercase text-xs tracking-[0.22em] mb-4">Organizing Committee</h4>
+                            <div class="coord-grid">
+                                <template x-for="person in activeEvent.details.committee">
+                                    <div class="text-center p-4 bg-white/[0.04] rounded-2xl border border-white/10">
+                                        <p class="text-xs font-bold text-white leading-tight mb-2" x-text="person.name"></p>
+                                        <p class="text-[10px] text-gray-500 uppercase tracking-[0.14em]" x-text="person.role"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div x-show="activeEvent.details.prizes">
+                            <h4 class="text-sky-300 font-bold uppercase text-xs tracking-[0.22em] mb-4">Prize Pool</h4>
+                            <div class="flex flex-wrap gap-4">
+                                <template x-for="prize in activeEvent.details.prizes">
+                                    <div class="bg-sky-400/10 border border-sky-300/20 px-6 py-4 rounded-2xl min-w-[130px]">
+                                        <span class="text-[10px] block uppercase text-sky-300 font-bold mb-1 tracking-[0.18em]" x-text="prize.rank"></span>
+                                        <span class="text-2xl font-black prize-glow text-white" x-text="'₹' + prize.amount"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                      <div x-show="activeEvent.details.fee" class="bg-blue-500/10 p-5 rounded-2xl border border-blue-400/20 space-y-4">
+    
+    <div>
+        <span class="text-[10px] block uppercase text-sky-300 font-bold mb-2 tracking-[0.18em]">
+            Registration Fee
+        </span>
+        <span class="text-2xl font-black text-white" x-text="activeEvent.details.fee"></span>
+    </div>
+
+    <button 
+        x-show="activeEvent.details.registerLink"
+        @click="window.open(activeEvent.details.registerLink, '_blank')" 
+        class="w-full primary-btn py-3 rounded-xl text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all">
+        Register Now
+    </button>
+
+</div>
+                    </div>
+                </template>
+            </div>
+
+            <button @click="isDetailsOpen = false" class="mt-10 w-full secondary-btn py-4 rounded-2xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all text-white">
+                Go Back
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function festApp() {
+            return {
+                isModalOpen: false, isDetailsOpen: false, selectedDept: null, activeEvent: null,
+                departments: [
+                    { 
+                        name: 'MANAVIKA', deptType:'HUMANITIES', deptTagline: "Intellect Unleashed, Victory Earned", 
+                        logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Manavika%20-%20Humanities%20Logo.png?raw=true',
+                         icon: 'fas fa-landmark', 
+                        events: [
+                            {
+                                name: 'Survival Saga: BGMI', tagline: 'Glory Belongs To Fearless',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/SURVIVAL%20SAGA%20-%20UPDATED%20LOGO%20NEW%20(7).png?raw=true",
+                                details: { 
+                                    instructions: [
+                                        "Each team must consist of maximum 4 players (Squad format).",
+                                        "All matches will be played in custom rooms.",
+                                        "Players must use the same registered in-game name (IGN) and Game ID.",
+                                        "Emulators are not allowed; only mobile/Android tablet/ipad devices can be used.",
+                                        "Use of hacks, cheats, or any unfair tools is strictly prohibited.",
+                                        "1 Elimination =1 Point",
+                                        "Placement/Rank Points:1st-10 , 2nd-6 , 3rd-5 , 4th-4 , 5th-3 , 6th-2 , 7th-1",
+                                        "Teams are ranked based on total cumulative points",
+                                        "Teams must follow fair play and maintain proper sportsmanship.",
+                                        "Any team violating rules will be immediately disqualified.",
+                                        "Teams must join the room before the match starts.",
+                                        "The organizers’ decision will be final in case of any disputes."
+                                    ],
+                                    rounds:[
+                                        {title:"Round 1-Qualifiers Round (Erangel Map)"},
+                                        {title:"Round 2-Semi-Final Round (Miramar Map)"},
+                                        {title:"Round 3-Grand Final (Erangel Map)"}
+                                    ],
+                                    committee: [
+                                         {name: "Dr.K K SOMASHEKARA (9036456449)", role: "TEACHER CO-ORDINATOR"},
+                                        {name: "Kalyan Kumar H (8310697668)", role: "STUDENT CO-ORDINATOR"},
+                                        {name: "Dhavan R (7975686511)", role: "STUDENT CO-ORDINATOR"}
+                                    ], 
+                                    fee: "Rs 600/ per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeXixFGEglaHFCay6D38jDZilHeYwGLx9s7nDl6OrvHnaOGkA/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'Wisdom War: Quiz', tagline: 'THINK DIFFERENT - ACT INTELLECT',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/pubg.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Each team shall consist of maximum 2 members with team name",
+                                        "Team Members must be from the same college",
+                                        "Open for all streams of UG students",
+                                        "Use of mobile phones, calculators, or any external aids is strictly prohibited",
+                                        "Quiz master/Judges decision is final.",
+                                        "Participation certificate will be issued for all teams"
+                                    ],
+                                    rounds: [
+                                        { title: "ROUND 1: GENERAL KNOWLEDGE", desc: "25 MCQ questions. 10 points each. 20 mins duration. Topics: All streams, Current affairs, Sports & Misc. Top scoring teams move forward." },
+                                        { title: "ROUND 2: THE VISUAL QUEST", desc: "Identification via hearing and visualization. 30 seconds per item. 10 points per right answer. In case of tie, additional questions determine winners." },
+                                        { title: "ROUND 3: QUICK QUEST QUIZ (RAPID FIRE)", desc: "10 questions in 1 minute. 10 points for each right answer. No passing to other teams. Top teams reach final." },
+                                        { title: "ROUND 4: CHRONOLOGY", desc: "Arrange 10 events in chronology. Fastest finger will determine winners." }
+                                    ],
+                                    committee: [
+                                        {name:"VENKATALAKSHIMI M N (9448472024)",role:"TEACHER CO-ORDINATOR"},
+                                        {name: "Dr. SOMASHEKARA.K.K (9036456449)", role: "TEACHER CO-ORDINATOR"},
+                                        {name: "Harshitha S (8904072025)", role: "STUDENT CO-ORDINATOR"},
+                                        {name: "Sindhushree PK (8310173675)", role: "STUDENT CO-ORDINATOR"}
+                                    ],
+                                    fee: "Rs 300/ per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfiKESE8wmU1jnDM7citlOpUlXLERifYcFsBOKb6jHHa16nOw/viewform?usp=header"
+                                }
+                            }
+                        ] 
+                    },
+                    { 
+                        name: 'MAHAMADHYAMA',deptType:'JORUNALISM',deptTagline:"Media | Communication | Journalism", logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/journalism-removebg-preview.png?raw=true', icon: 'fas fa-camera-retro', 
+                        events: [
+                            {
+                                name: 'Prime Time Showdown', tagline: 'Breaking News, Breaking Barriers',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Prime%20Time%20Showdown%20Logo.jpeg?raw=true",
+                                details: {
+                                    longDesc: "Step into the spotlight and master the art of the broadcast. Race against the clock to craft headlines and command the airwaves.",
+                                    instructions: [
+"1. Each team must consist of two participants who will act as the news anchors/readers.",
+"2. Teams will have 10 minutes to select up to 6 current affairs topics and write an original script.",
+"3. Participants will read from a teleprompter for 4+1 minutes (warning at 4 mins, cut-off at 5 mins).",
+"4. The script and delivery must be entirely in English or Kannada. An online copy of the script must be submitted to organizers.",
+"5. Devices are allowed for research only. Use of AI for script generation is strictly prohibited and will lead to disqualification."
+                                    ],
+                                    committee: [
+                                        {name: "Ms.Swarna(9731093401)", role: "Teacher Coordinator"},
+                                        {name: "Pavan Kumar S(9901220890)", role: "Lead Coordinator"}
+                                    
+                                    ],
+                                    fee: "Rs 300/ per team",
+                                    registerLink:"https://docs.google.com/forms/d/e/1FAIpQLSenXnh535gHulyDEQRheA6DjDcjYPF6W6aoIHeRGMAAsZZ1jA/viewform?usp=header"
+                                }
+                            },
+                            {
+                                name: 'Captured Perspectives', tagline: 'One Frame, Infinite Stories',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/WhatsApp%20Image%202026-03-22%20at%206.58.43%20PM.jpeg?raw=true",
+                                details: {
+                                    longDesc: "Theme: 'Life Between the Lanes'. Document the essence of everyday life in the spaces between.",
+                                    instructions: [
+                                        
+"1. Individual event. Participants must submit a minimum of 5 original photographs that capture and align with the central theme: (Life Between The Lanes). Using only a mobile phone.",
+"2.Each image must include a 30-50 word caption explaining the story behind the frame.",
+"3. No AI-generated images or excessive editing. Only basic color correction and cropping are permitted.",
+"4. Entries must be in high-resolution JPEG/PNG format and emailed to (deptofjmcmfgc@gmail.com) before April 5th.",
+"5. Participants must be physically present on the day of competition."
+                                    ],
+                                    committee: [
+                                        {name: "Ms.Swarna(9731093401)", role: "Teacher Coordinator"},
+                                        {name: "Kannika M K(7338551584)", role: "Lead Coordinator"}
+                                    ],
+                                    fee: "Rs 150/ per head",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSf4cAKIUYhw-d_PYxCR1eLPOBLt4uc0ttYu9wVihQ8N2XCKJQ/viewform?usp=header"
+                                }
+                            },
+                            {
+                                name: 'Voices & Visions', tagline: 'Debate: Gender & Media',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Debate%20Competition.png?raw=true",
+                                details: {
+                                    longDesc: "Rewriting narratives, challenging norms. This competition offers a platform to engage in critical discourse on pressing gender issues in media.",
+                                    instructions: [
+                                    "1. This is an individual event, all topics will be based on Gender and Media, and participants must stay relevant to the given topic.",
+                                    "2. Round 1, elimination round, people will speak for or against on the same topic for 2+1 minutes.",
+                                    "3. Round 2 (Rebuttal/Face-off): The remaining participants will be paired to debate a single topic. Each participant will first have 1 minute each to present their stance (for or against) without interruption. Following these opening statements, the pair will engage in a 3-minute freeform debate.",
+                                    "4. Participants may speak in Kannada, English, or both, but must use respectful language at all times.",
+                                    "5. No devices or AI tools are allowed once the competition starts; only pen and paper (provided) may be used."
+                                    ],
+                                    rounds: [
+                                        { title: "Round 1", desc: "Speak FOR or AGAINST for one common topic for 2+1 minutes." },
+                                        { title: "Round 2: Face-off/Rebuttal", desc: "Two participants debate same topic for 5 minutes total" }
+                                    ],
+                                    committee: [
+                                        {name: "Mrs. Chandana(9986857267)", role: "Teacher Coordinator"},
+                                        {name: "Kannika Mahabala(9535665103)", role: "Lead Coordinator"}
+                                    ],
+                                    fee: "Rs 150/ per participant",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeAl0kxx1CegzngCupvR1T2x-Pr4fnt_PGoNkH5Ikk37omZSA/viewform?usp=header"
+                                }
+                            }
+                        ] 
+                    },{ 
+    name: 'VIGYAN MANTHAN',deptType:'PHYSICAL SCIENCE',deptTagline:"Churning of Scientific & Computational Potential ",
+    logo: 'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/ps.jpeg?raw=true', 
+    icon: 'fas fa-atom', 
+    events: [
+        {
+            name: 'VIGYAN MANTHAN', 
+            tagline: 'CHURNING OF SCIENTIFIC POTENTIA',
+            logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/1000199406-removebg-preview.png?raw=true",
+            details: {
+                longDesc: "VIGYAN MANTHAN is a comprehensive science gauntlet designed to test scientific logic, physical laws, and analytical thinking through a series of brainstroming battle ",
+                rounds: [
+                    { title: "PHASE 1: ROCKET RUSH", desc: "Newton's Third Law Demonstration using balloons, straws, and strings to reach a fixed distance in the shortest time." },
+                    { title: "PHASE 2: NODE RUNNERS", desc: "A human co-ordinate game involving 2D and 3D mapping where team members 'plot' themselves on a physical grid." },
+                    { title: "PHASE 3: MAZE OF MINDS", desc: "Network Graph Analysis requiring teams to identify the shortest path and total distance between nodes." },
+                    { title: "PHASE 4: CRYPTIC CHASE", desc: "The Mega Event: A science-based treasure hunt solving equations across Physics,Mathematics, Chemistry, and Computer Science to find the final goal." }
+                ],
+                instructions: [
+                    "1. There should be two members in a team",
+                    "2. Should not use phone or smart devices",
+                    "3. Any number of teams from the same college can participate" ,
+                    "4. Judges decision will be final",
+                    "5. The organiser reserve the right to modify or cancel events if necessary" ,
+                    "6.Students should have basic general science knowledge"
+                ],
+                committee: [
+                    {name: "DR. SUMATHI MP (9880810618)", role: "TEACHER CO-ORDINATOR"},
+                    {name: "MS. GAYATHRI V (9980859170)", role: "TEACHER CO-COORDINATOR"},
+                    {name: "AKANKSHA (8073822859)", role: "STUDENT CO-ORDINATOR"},
+                    {name: "SAMUDYATHA (7676154818)", role: "STUDENT CO-ORDINATOR"},
+                    {name: "KARTHIK (8431975523)", role: "STUDENT CO-ORDINATOR"}
+                ],
+                fee: "₹300/- PER TEAM",
+                registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSc0T1a3kGeHkLS6xoN8I60tSfNlvMrQMnQhwfC57S-0f9X0kQ/viewform?usp=header"
+                
+            }
+        }
+    ] 
+},
+                    { 
+                        name: 'TECHXELERATE', deptType:'COMPUTER APPLICATION',deptTagline:"Accelerating Intelligence",     
+                        logo: 'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Techxelerate-removebg-preview.png?raw=true',
+                        icon: 'fas fa-code',
+                        events: [
+                            {
+                                name: 'Mind Your Bytes', tagline: 'Error 101: Thinking Required',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/WhatsApp%20Image%202026-03-22%20at%206.33.26%20PM.jpeg?raw=true",
+                                details: {
+                                    longDesc: "The Event bridges digital logic and physical execution through five intense rounds of problem-solving, visual memory, and non-verbal communication.",
+                                    instructions: [
+                                        'REPORTING TIME 8:30AM',
+                                        "Team Size: Maximum of 3 participants per team.",
+                                        "Mobile phones/smart wearables strictly prohibited during Rounds 1-4.",
+                                        "Devices are only permitted for the Final Round (Kahoot!).",
+                                        "Eliminations occur after Round 2 and Round 4.",
+                                        "Decision of the judges/co-ordinators is final."
+                   ],
+                                    rounds: [
+                                        { title: "Round 1: The Binary Trail", desc: "1 member hunts physical tokens while 2 members solve a tech crossword." },
+                                        { title: "Round 2: Buffer Acting", desc: "Tech Charades: 1 member acts (no talking) while 2 guess tech phrases (2 mintues timeline)." },
+                                        { title: "Round 3: RAM Recall", desc: "Observe a technical diagram for 30seconds and notedown the words 30seconds." },
+                                        { title: "Round 4: Pixelated Puzzles", desc: "Solve visual riddles." },
+                                        { title: "Round 5: The Final Kernel", desc: "Top teams enter a live digital Kahoot! quiz." }
+                                    ],
+                                    committee: [
+                                        {name: "Smt. Manasa K (80958 58353)", role: "Teacher Coordinator"},
+                                        {name: "Smt. Manasa M (90365 73374)", role: "Teacher Coordinator"},
+                                        {name: "Smt. Apporva B (99643 69892)", role: "Teacher Coordinator"},
+                                        {name: "Sham Mahesh K (93536 23942)", role: "Student Coordinator"},
+                                        {name:"Kusuma H V (8105658176)",role:"Student Coordinato"}
+                                    ],
+                                    fee: "₹450/- per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeyS1CJXtK7IE2dSSqWYOxLVMMdgR2sRRuK80s4QRN6zf4kiA/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'Prompt to Product', tagline: 'One Prompt Away From Genius',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/prompt.png?raw=true",
+                                details: {
+                                    longDesc: "Prompt to Product is an exciting AI-based competition where participants transform creative ideas into real digital creations using AI tools.",
+                                    instructions: [
+                                        'REPORTING TIME 8:30AM',
+                                        "Teams of 3 members. Must use college lab systems.",
+                                        "Participants can use any AI tools and applications",
+                                        "Mobile phones allowed only for generating AI videos.",
+                                        "Late submissions will not be accepted.",
+                                         "Decision of the judges/co-ordinators is final."
+                                    ],
+                                    rounds: [
+                                        { title: "Round 1: AI Short Film", desc: "Create a 30-60 sec video based on spot theme(Time limit 45 minutes) ." },
+                                        { title: "Round 2: UX Nightmare", desc: "Design an intentionally frustrating UI(Time limit 45 minutes)." },
+                                        { title: "Round 3: AI Website Builder", desc: "Build a simple AI website that promotes social good and creates impact(Time limit 1 hours 30 minutes)." }
+                                    ],
+                                    committee: [
+                                        {name: "Smt.Sahana Shree (8762449677)", role: "Teacher Coordinator"},
+                                        {name: "Smt. Apoorva D (81058 43176)", role: "Teacher Coordinator"},
+                                        {name: "Smt.Archana A (8660556622)", role: "Teacher Coordinator"},
+                                        {name: "Shri Vaishnovi Bhat (9980821165)", role: "Student Coordinator"},
+                                        {name: "Yashas Kumar R (85468 10357)", role: "Student Coordinator"},
+                                        {name: "Edwin Solomon J (63607 56804)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹450/- per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfPAOHlQSvO_cntcDszDSm2CqbEmK7o_U2uHLHF9I_za0oI8Q/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'Fire Arena', tagline: 'Claim Your Throne in the Heat of Battle',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/free%20fire.jpeg?raw=true",
+                                details: {
+                                    longDesc: "High-adrenaline Free Fire esports tournament. A test of strategy, coordination, and survival.",
+                                    instructions: [
+                                        'REPORTING TIME 8:30AM',
+                                        "No Height Advantages (Wall Climbing, Roof Top). Only in CS).",
+
+                                        "No wall Breaking. (Only in CS).",
+
+                                        "Gun Skins Off. (BR + CS).",
+
+                                    "Hacks / Scripts and Team Up → Direct Disqualification.",
+
+                                    "Character skills off (Only in CS).",
+
+                                    "Mobile gameplay only.",
+
+"Squad vs Squad.",
+
+"Toxic behaviour will be punished.",
+
+"Both BR and CS will be Played.",
+
+"No Wi-Fi will be provided.",
+
+"Bring your own accessories.",
+
+"Bring Your ID Cards",
+
+ "Decision of the judges/co-ordinators is final." 
+                             
+
+                                    ],
+                                    rounds: [
+                                        { title: "Round 1: Battle Royal", desc: "3 sets of 12 teams. 21 teams eliminated." },
+                                        { title: "Round 2: Clash Squad", desc: "7 sets of 2 teams. 7 teams eliminated." }
+                                    ],
+                                    committee: [
+                                        {name: "Sri. Anmol (63633 43483)", role: "Teacher Coordinator"},
+                                        {name: "Smt.Megha (7483536014)", role: "Teacher Coordinator"},
+                                        {name: "Chiranthan R Gowda (97392 81371)", role: "Student Coordinator"},
+                                        {name: "Sumanth Y D (88675 43415)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹600/- per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeIEgVo1QaEY5MUrKe9OXsFpG25W1iwxxL4cB7v2PLqr95t6Q/viewform?usp=publish-editor"
+                                }
+                            }
+                        ] 
+                    },
+                    { 
+                        name: 'TALENTIA',deptType:'TALENT FORUM',deptTagline:"Unifying Passion Through Play", logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Talents_Forum-removebg-preview.png?raw=true', icon: 'fas fa-music', 
+                        events: [
+                            {
+                                name: 'CINI-SWARA', tagline: 'FILM HITS COMPETITION',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/cini-sara.jpeg?raw=true",
+                                details: {
+                                    longDesc: "Showcase your vocal talent with Indian film songs across any language.",
+                                    instructions: [
+                                        "Each participant can sing any Indian film songs (No language barrier).",
+                                        "Each participant is given 3+1 mins.",
+                                        "Participants are allowed to use karaoke and instrument.",
+                                        "Vulgar and obscene language is not allowed.",
+                                        "Participant must mention Film name, composer and singers name before performance.",
+                                        "Judges decision is final."
+                                    ],
+                                    committee: [
+                                        {name: "Vikas V (8073760641)", role: "Student Coordinator"},
+                                        {name: "Chetan MC (7483118756)", role: "Student Coordinator"},
+                                        {name: "P J Sinchana (7349782818)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹150",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLScnoNiLWlmv1nUyvLE6IAu0W9UZI6hxlQ091sypKwNJOWo5kA/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'NATYOTSAVA', tagline: 'GROUP- DANCE COMPETITION',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/group-dance.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Minimum number of participant is 8 - Maximum 12.",
+                                        "Time limit for each group is 7+1 minutes.",
+                                        "Participants must send their tracks prior to the co-ordinator.",
+                                        "Properties and costume must be arranged by the competitor itself.",
+                                        "Vulgar and obscenity are strictly prohibited.",
+                                        "Judges decision is final."
+                                    ],
+                                    committee: [
+                                        {name: "Divyashree R  (9148722010)", role: "Student Coordinator"},
+                                        {name: "Supreetha (8951051965 )", role: "Student Coordinator"},
+                                        {name:"Surya (9019371144)",role:"Student Coodinator"}
+                                    ],
+                                    fee: "₹800 per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSc6ETimDC08yNwhHDpHmwppBYXkpkxURKe2RZOFZWqmxoAhiQ/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'BEAT BREAKER', tagline: 'WESTERN SOLO DANCE',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/beat.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Individual performance.",
+                                        "Each participant is given 3+1 min.",
+                                        "Participants must send their tracks prior to the co-ordinator.",
+                                        "Obscene costumes are strictly prohibited.",
+                                        "Judges decision is final."
+                                    ],
+                                    committee: [
+                                        {name: "Nithin kumar d k (7349672070)", role: "Student Coordinator"},
+                                        {name: "Priya Rai (93800 28826)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹150",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfVbfa5nOUsSXSofMYpac32nrINY-OCjcK96r5WSXz-qjPdWA/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'SUTRADHAR RAMP WALK', tagline: 'FASHION SHOW',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/ramppp.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Theme of the competition is Indo-Western or traditional.",
+                                        "Each team must consist of 8- 12 participants.",
+                                        "Time limit for each group is 7+1 minutes.",
+                                        "Participants must send their tracks prior to the co-ordinator.",
+                                        "Properties and costume must be arranged by the competitor itself.",
+                                        "Vulgar and obscene costumes are strictly prohibited.",
+                                        "Judges decision is final."
+                                    ],
+                                    committee: [
+                                        {name: "Yuvraj (9141200685)", role: "Student Coordinator"},
+                                        {name: "Shashank (8496801561)", role: "Student Coordinator"},
+                                        {name: "Sanjana Yadav (8660903674)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹800",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSe8w-E8-aKg-_hY1rgvODiHiYxDaA2qpeKR8c-xkfpe3Jmdyg/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'BHAAVA LAHARI', tagline: 'BHAAVAGEETHE COMPETITION',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/bhaava%20lahari.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Each participant can sing any Kannada Bhaavageethe.",
+                                        "Each participant is given 4+1 min.",
+                                        "Participants are allowed to use Tanpura / Shruthi.",
+                                        "Karaoke and instrument are prohibited.",
+                                        "Participant must mention the author of the song before performance.",
+                                        "Judges decision is final."
+                                    ],
+                                    committee: [
+                                        {name: "Mohan Raj B (7892281836)", role: "Student Coordinator"},
+                                        {name: "Lakshmi Varshini (8197125730)", role: "Student Coordinator"},
+                                        {name:"Pavan Dev (7022787381)",role:"Student Coordinator"}
+                                    ],
+                                    fee: "₹150",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSdN1i_bHtXFux44m95Toq2jxoa20LEgovOhbcxGp4n0pjdIXA/viewform?usp=publish-editor"
+                                }
+                            }
+                        ] 
+                    },
+                    { 
+                        name: 'SPORTIVA',deptType:'SPORTS',deptTagline:"Unifying Passion Through Play", logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Sportiva-removebg-preview.png?raw=true', icon: 'fas fa-running', 
+                        events: [
+                            {
+                                name: 'Cricket (Only For Boys) - 9th & 10th April', tagline: 'Street Style Showdown',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/cricket.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "1.   This is 30 yard Cricket tournament.", 
+"2.   Squad Size: Each team consists of 10 players (8 on-field + 2 substitutes).",
+"3.    Playing XI: Only 8 players will take the field at any given time.",
+"4.    Duration: Each innings consists of 4 overs.",
+"5.    One 'Lead Bowler' can bowl a maximum of 2 overs.",
+"6.   All participants college ID will be verifies before the match, only students with eligible ID can participate." ,
+"7. The bowler must deliver the ball from within the designated bowling box. If any part of the bowler’s foot touches or crosses the boundary lines of the box during the delivery, a No-Ball shall be signaled.",
+"8.Umpire's decision is final."
+
+                                    ],
+                                    committee: [
+                                        {name: "Dr. Bhaskar. H.N (9845190967)",role:"Teacher Coordinator"},
+                                        {name: "Madhusudan.P.S (7019659926)", role: "Teacher Coordinator"},
+                                        {name: "Akhilesh Gowda (6364477597)", role: "Lead Coordinator"},
+                                        {name: "Aryan. L. N", role: "Game Coordinator"},
+                                        {name: "Dhruva.M", role: "Game Coordinator"},
+                                        {name: "Puneeth Kumar. S. N", role: "Game Coordinator"},
+                                        {name: "Manoj Kumar M", role: "Game Coordinator"},
+                                        {name: "Shashank K", role: "Game Coordinator"},
+                                        {name :"Chiranthan R Gowda",role:"Game Coordinator"}
+
+                                        
+                                    ],
+                                    fee:"₹1000 per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSdQoRz7kH_V8U1CkbYoqsaGkYwJZ4Ths57gCEHzjl5D3DBR0w/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'Football (Only For Men)  - 8th  April', tagline: 'Rapid Knockout Format',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/football.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Squad Size: 5 main players on the field with 3 substitutes.",
+                                        "Format: Followed by a knockout stage.",
+                                        "Match Duration: Two 12-minute halves with a 3-minute break.",
+                                        "Knockout Tie-breaker: Decided by 3 penalty shootouts per team, followed by sudden death."
+                                    ],
+                                    committee: [
+                                        {name: "Dr. Bhaskar. H.N (9845190967)",role:"Teacher Coordinator"},
+                                        {name: "Madhusudan.P.S (7019659926)", role: "Teacher Coordinator"},
+                                        {name: "Roopesh(9482830400)", role: "Lead Coordinator"},
+                                        {name: "Sujith ", role: "Game Coordinator"},
+                                        {name: "Nishanth", role: "Game Coordinator"},
+                                        {name: "Akash", role: "Game Coordinator"},
+                                        {name: "Suprith M", role: "Game Coordinator"},
+                                        {name: "Prathyaksh Gowda M T ", role: "Game Coordinator"},
+                                        {name: "Kushal H J", role: "Game Coordinator"},
+                                        {name:"Nidhi Raj M N",role:'Game Coordinator'}
+
+                                        
+                                    ],
+                                    fee:"₹1000 per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSc_R0xymRa5lQqf_hf7RFslFwUwbw5fYUdxPTgbZcfF74Yh4A/viewform?usp=publish-editor"
+                                }
+                            },
+                            
+                        ] 
+                    },
+                    { 
+                        name: 'MAHODYAM',deptType:'COMMERCE',deptTagline:"The Powerhouse of Management Excellence ", logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/WhatsApp%20Image%202026-03-22%20at%2011.34.36%20AM.jpeg?raw=true", icon: 'fas fa-chart-line', 
+                        events: [
+                            {
+                                name: 'IDEATHON', tagline: 'Where Vision Meets Velocity',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/idea-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "An immersive simulation from idea to market launch. Experience the full business cycle through five competitive rounds that test real-world business acumen.",
+                                    instructions: [
+
+"1.All participants must report to the venue on time.",
+"2.Participants must follow the time limit for each round.",
+"3.Use of  external assistance is strictly prohibited during the event.",
+"4.Participants must maintain professionalism and discipline throughout the competition.",
+"5.The judges’ decision will be final and binding.",
+'6. Only one participant per team (individual event).'
+                                    ],
+                                    committee: [
+                                        {name: "Neethu Palaksha H.P (9008017879)", role: "Teacher Coordinator"},
+                                        {name: "Charu Jain (8861122072)", role: "Student Coordinator "},
+                                        {name: "Pancham (7760510486)", role: "Student Coordinator "}
+                                    ],
+                                    fee:"₹150",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSdF-84gwQPxLi8HdizvBfVkCJKkcbehkL9pqYGhahsatS2p8A/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'LAKSHYA (Marketing)', tagline: 'Eye On The Prize ,Mind On The Market',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/lakshya-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "An immersive simulation from idea to market launch. Experience the full business cycle through five competitive rounds that test real-world business acumen.",
+                                    instructions: [
+
+
+
+'1.Teams must have exactly two participants. ',
+'2.Report to the venue 15 minutes early to avoid disqualification.', 
+'3.Complete all tasks strictly within the allotted time.', 
+'4.Mobile phones, smartwatches, and electronic gadgets are strictly prohibited during the rounds unless specified by the organizers. ',
+'5.The decision of judges and event coordinators will be final. No arguments or dispute will be entertained '
+                                    ],
+                                    committee: [
+                                        {name: "Neethu Palaksha H.P (9008017879)", role: "Teacher Coordinator"},
+                                        {name: "Priyanka S P (7624840873)", role: "Student Coordinator "},
+                                        {name: "Veena M (7899443464)", role: "Student Coordinator "}
+                                    ],
+                                    fee:"₹300",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeOtJLfmfm52gVkzQyPhML79_xnjs4LO_Ga9hAcOZS4FlMTTg/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'ARTHAMANTHANA ( finance)', tagline: 'The Finance Battle',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/manavya-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "An immersive simulation from idea to market launch. Experience the full business cycle through five competitive rounds that test real-world business acumen.",
+                                    instructions: [
+
+'Each team must consist of 2 participants',
+'The event will consist of multiple rounds. Team scoring Highest points in each round will qualify for next rounds',
+'Mobile phones, smartwatches, and electronic gadgets are strictly prohibited during the rounds unless specified by the organizers.',
+ 'The decision of judges and event coordinators will be final. No arguments or dispute will be entertained ',
+'Laptop is compulsory'
+                                    ],
+                                    committee: [
+                                        {name: "Neethu Palaksha H.P (9008017879)", role: "Teacher Coordinator"},
+                                        {name: "Prerna R (8310251142)", role: "Student Coordinator "},
+                                        {name: "Pratham Kudva M (9686275758)", role: "Student Coordinator "}
+                                    ],
+                                    fee:"₹300",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSes1Q9mS8dQzwO4O0IRFC1lyxtfV8-OSAMeS9HayUQE3Mhy_w/viewform?usp=publish-editor"
+                                }
+                            },
+                             {
+                                name: 'MANAVYA ( HR)', tagline: 'Where Humanity Meets HR',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/manavya-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "An immersive simulation from idea to market launch. Experience the full business cycle through five competitive rounds that test real-world business acumen.",
+                                    instructions: [
+
+
+'Each team must consist of 2 participants',
+'The event will consist of multiple rounds. Team scoring Highest points in each round will qualify for next rounds',
+'Mobile phones, smartwatches, and electronic gadgets are strictly prohibited during the rounds unless specified by the organizers.',
+ 'The decision of judges and event coordinators will be final. No arguments or dispute will be entertained ',
+'Laptop is compulsory'
+                                    ],
+                                    committee: [
+                                        {name: "Neethu Palaksha H.P (9008017879)", role: "Teacher Coordinator"},
+                                        {name: "Vaishanavi V T (8197530612)", role: "Student Coordinator"},
+                                        {name: "Janani (9480962609)", role: "Student Coordinator "}
+                                    ],
+                                    fee:"₹300",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfkQKS6QZlKq8QFDb4_ag_aOxqBJH0HbjK8sA_ZMTIRUovXLQ/viewform?usp=publish-editor"
+                                }
+                            },
+                            
+
+                        ] 
+                    },
+                    { 
+                        name: 'NIYAM',deptType:'NCC',deptTagline:"•Decipline •Precision •Unity", logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Ncc-removebg-preview.png?raw=true', icon: 'fas fa-shield-alt', 
+                        events: [
+                            {
+                                name: 'NIYAM – Drill Competition - 9th & 10th April', tagline: 'Where Discipline Commands',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Ncc-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "A display of discipline, precision, and teamwork performed by cadets through synchronized marching and coordinated movements. This competition is the first state-level drill competition of its kind conducted by our college.",
+                                    instructions: [
+                                        "Exclusively for NCC cadets (SD/SW category).",
+                                        "Registration must be completed using the regimental number.",
+                                        "Team Composition: 10 members in contingent+ 2 members optional.",
+                                        "Competition includes both foot drill and weapons drill.",
+                                        "College ID is mandatory for all participants.",
+                                        "Proper uniform and discipline must be maintained.",
+                                        "The decision of the judges will be final and binding."
+                                    ],
+                                    committee: [
+                                        {name: "Fg Offr (Dr.) Pushparani P G (8317482874)", role: "Teacher Coordinator"},
+                                        {name: "Lt Gayathri V (9980859170)", role: "Teacher Coordinator"},
+                                        {name: "SUO Yashaswini S (9663078328)", role: "Student Coordinator"},
+                                        {name: "Cpl Niranjana P Babu (9611257105)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹1000 per contingent",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeCdyvMrqIo2xFQkTRoaJu0tBqZ5tyyIw1AcldC-UthI2lz5A/viewform?usp=header"
+                                }
+                            }
+                        ] 
+                    },
+                    { 
+                        name: 'MINDFUSION',deptType:'PSYCHOLOGY',deptTagline:"Integrate the Mind, Explore the Self", logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/psychology-removebg-preview%20(1).png?raw=true', icon: 'fas fa-fingerprint', 
+                        events: [
+                            {
+                                name: 'Mind Maze', tagline: 'Navigate the Maze of Thoughts',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/mind-maze.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Open to Undergraduate students only.",
+                                        "Each team must consist of 2 members.",
+                                        "No use of mobile phones or external help allowed during the event.",
+                                        "Teams must report 15 minutes before the event begins.",
+                                        "Instructions for each game or round will be explained on the spot."
+                                    ],
+                                    committee: [
+                                        {name: "Madhushree A M (9108009138)", role: "Teacher Coordinator"},
+                                        {name: "Meghashree (9591097051)", role: "Student Coordinator"},
+                                        {name: "Siddesh H (9036797096)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹300 per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeQTvNM609ktlV1dhC3icprZ3yMYYh8b-MriRRpbB8pJ1qJ2A/viewform?usp=publish-editor"
+                                }
+                            },
+                            {
+                                name: 'PsyFusion', tagline: 'Challenge Your Mind, Master the Distractions',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/psyfusion.jpeg?raw=true",
+                                details: {
+                                    instructions: [
+                                        "Open to Undergraduate students.",
+                                        "This is an individual event.",
+                                        "Participants must follow the instructions given for each round carefully.",
+                                        "No mobile phones or external help allowed during the event.",
+                                        "Participants must report 15 minutes before the event begins.",
+                                        "Instructions for each round will be explained on the spot."
+                                    ],
+                                    committee: [
+                                        {name: "Madhushree A M (9108009138)", role: "Teacher Coordinator"},
+                                        {name: "Srinidhi (8296113072)", role: "Student Coordinator"},
+                                        {name: "Arpitha (7019032419)", role: "Student Coordinator"}
+                                    ],
+                                    fee: "₹150 per head",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSeb8xx0NQan_bCkBzNjSSjkjskNf6mGMDBly3KHc_fuZ1yGdQ/viewform?usp=header"
+                                }
+                            }
+                        ] 
+                    },
+                    { 
+                        name: 'HELIXIA',deptType:'LIFE SCIENCE',deptTagline:"Twisting Science into Innovation",  logo:'https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Gemini_Generated_Image_xjnav3xjnav3xjna-removebg-preview.png?raw=true',
+                        icon: 'fas fa-dna', 
+                        events: [
+                            {
+                                name: 'Helixia', 
+                                tagline: 'The Ultimate Life Science Gauntlet',
+                                logo:"https://github.com/YASHASKUMARR/INTER-COLLEGE-EVENT/blob/main/Gemini_Generated_Image_xjnav3xjnav3xjna-removebg-preview.png?raw=true",
+                                details: {
+                                    longDesc: "A multi-level competition designed to test your memory, translation skills, and scientific logic across the spectrum of life sciences.",
+                                    rounds: [
+                                        { title: "Level 1: The Memory Lab", desc: "30s to observe lab items, then 2 min relay for team to list them. High recall wins." },
+                                        { title: "Level 2: Biopictionary", desc: "One member draws a biological term on the board; the other guesses. No letters, symbols, or speaking allowed." },
+                                        { title: "Level 3: Element Rush", desc: "Teams must identify and list the maximum terms associated with specific chemical elements within 2 minutes." },
+                                        { title: "Level 4: Think and Link", desc: "A logic-based round where teams must connect image and word clues to identify a scientific concept." },
+                                        { title: "Level 5: Claytopia", desc: "Creativity meets science. Teams build a 3D model of a biological structure using clay provided on the spot." },
+                                        { title: "Level 6: Biomystica (The Final Escape)", desc: "A high-stakes Biochemistry-themed escape room. Solve laboratory puzzles to 'escape' and claim victory." }
+                                    ],
+                                    committee: [
+                                        {name: "Mrs. Nayana Sahadevan", role: "Faculty Coordinator"},
+                                        {name: "Ms.Spandana N", role: "Faculty Coordinator"},
+                                        {name: "Ms. Niharika K P", role: "Student Coordinator"},
+                                        {name: "Mr.Yathish KS(8867553656)", role: "Student Coordinator"},
+                                        {name: "Mr.Akshobhya Bhat(8088857392)", role: "Student Coordinator"}
+                                        
+                                    ],
+                                    fee: "Rs 300/ per team",
+                                    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSc1zWwQUnmBNsJZy3WjiaG0QmaKQ117lMTm4AuIeexvDx9nvw/viewform?usp=header"
+                                }
+                            },
+                        ] 
+                    }
+                ],
+                openDept(dept) { this.selectedDept = dept; this.isModalOpen = true; },
+                showDetails(event) { this.activeEvent = event; this.isDetailsOpen = true; }
+            }
+        }
+    </script>
+</body>
+</html>
